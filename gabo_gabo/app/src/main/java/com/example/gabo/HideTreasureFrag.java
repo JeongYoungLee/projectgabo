@@ -28,6 +28,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -52,11 +57,10 @@ public class HideTreasureFrag extends Fragment {
     private ImageView img_addphoto;  //사진등록버튼
     private Dialog dialog_camera;   //사진등록하기 다이얼로그
     private static final String TAG = "Treasure";
-    private static final int REQUEST_TAKE_PHOTO = 1;
-    private static final int PICK_FROM_ALBUM = 2;
-    private ImageView iv_UserPhoto;
-    private String currentPhotoPath;
 
+    Bitmap bitmap;
+
+    private ImageView iv_UserPhoto;
 
     //등록신청버튼
     private TextView btn_add_treasure;
@@ -64,14 +68,14 @@ public class HideTreasureFrag extends Fragment {
     private HashTagEditTextView tagTextView; //입력된 해시태그를 배열로 추출하기 위한 변수
     FrameLayout hash_hint_frame;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
         View view = inflater.inflate(R.layout.trs_add_lyt,container,false);
-
-        iv_UserPhoto = getActivity().findViewById(R.id.iv_UserPhoto);
+        iv_UserPhoto = view.findViewById(R.id.iv_UserPhoto);
 
 
         /*--------------------보물등록 카테고리---------------------*/
@@ -136,13 +140,7 @@ public class HideTreasureFrag extends Fragment {
         img_addphoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//                if(isExistCameraApp()){
-//                    Intent cameraAppIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                    startActivityForResult(cameraAppIntent,10000);
-//                }
                 showDialogCamera();
-
             }
         });
 
@@ -183,16 +181,8 @@ public class HideTreasureFrag extends Fragment {
         dialog_btn_cam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dispatchTakePictureIntent();
-            }
-        });
-
-        //앨범에서 찾기 버튼
-        TextView dialog_btn_album = dialog_camera.findViewById(R.id.dialog_btn_album);
-        dialog_btn_album.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doTakeAlbumAction();
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                activityResultPicture.launch(intent);
             }
         });
 
@@ -210,104 +200,17 @@ public class HideTreasureFrag extends Fragment {
     }
 
 
-
-
-
-    /*---------원본파일 저장을 위한 함수 -----*/
-    private File createImageFile() throws IOException{
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-    /*-------카메라 앱으로 사진 촬영-------*/
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            }catch (IOException ex){
-                // Error occurred while creating the File
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null){
-                Uri photoURI = FileProvider.getUriForFile(getActivity(),"com.example.gabo.fileprovider",photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI);
-                getActivity().startActivityForResult(takePictureIntent,REQUEST_TAKE_PHOTO);
+    ActivityResultLauncher<Intent> activityResultPicture = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if(result.getResultCode() == RESULT_OK && result.getData() != null){
+                Bundle extras = result.getData().getExtras();
+                bitmap = (Bitmap) extras.get("data");
+                img_addphoto.setImageBitmap(bitmap);
+                dialog_camera.dismiss();
             }
         }
+    });
 
-    }
-
-    /*--------앨범에서 이미지 가져오기-------*/
-    public void doTakeAlbumAction(){//앨범에서 이미지 가져오기
-        //앨범 호출하기
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
-        getActivity().startActivityForResult(intent, PICK_FROM_ALBUM);
-
-    }
-
-
-    /*-------미리보기 이미지 가져오기-------*/
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        try {
-            switch (requestCode) {
-                case PICK_FROM_ALBUM: { //이후 처리가 카메라와 같아서 일단 break없이 처리
-                    if (resultCode==RESULT_OK){
-                        Uri selectImageUri = data.getData();
-                        iv_UserPhoto.setImageURI(selectImageUri);
-                        dialog_camera.dismiss();
-                    }
-                    break;
-                }
-
-                case REQUEST_TAKE_PHOTO: {
-                    if (resultCode == RESULT_OK) {
-                        File file = new File(currentPhotoPath);
-                        Log.d("FindTreasure",currentPhotoPath);
-                        Bitmap bitmap;
-                        if (Build.VERSION.SDK_INT >= 29) {
-                            ImageDecoder.Source source = ImageDecoder.createSource(getContext().getContentResolver(), Uri.fromFile(file));
-                            try {
-                                bitmap = ImageDecoder.decodeBitmap(source);
-                                if (bitmap != null) { iv_UserPhoto.setImageBitmap(bitmap); }
-                                dialog_camera.dismiss();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            try {
-                                bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Uri.fromFile(file));
-                                if (bitmap != null) { iv_UserPhoto.setImageBitmap(bitmap);}
-                                dialog_camera.dismiss();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                    break;
-                }
-
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-
-    }
 
 }

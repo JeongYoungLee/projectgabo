@@ -1,15 +1,14 @@
 package com.example.gabo;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -21,8 +20,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.gabo.JoinActivity;
-import com.example.gabo.R;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -58,8 +55,9 @@ public class LoginActivity extends AppCompatActivity {
         btn_login_signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                sendRequest();
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+                //sendRequest();
             }
         });
     }
@@ -68,20 +66,18 @@ public class LoginActivity extends AppCompatActivity {
         // Volley Lib 새로운 요청객체 생성
         queue = Volley.newRequestQueue(this);
         // 서버에 요청할 주소
-        String url = "http://192.168.21.252:5013/login";
+        String url = "http://192.168.0.26:9500/login";
         // 요청 문자열 저장
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             // 응답데이터를 받아오는 곳
             @Override
             public void onResponse(String response) {
                 Log.v("resultValue", response);
-                //String[] info = response.split(",");
-                if (response.equals("로그인성공")){
-                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getApplicationContext(),"ID 또는 PW가 틀렸습니다.",Toast.LENGTH_LONG).show();
-                }
+                String[] info = response.split(",");
+                Log.v("resultValue", "id : " + info[0]);
+                Log.v("resultValue", "pw : " + info[1]);
+                Log.v("resultValue", "nick : " + info[2]);
+                Log.v("resultValue", "addr : " + info[3]);
             }
         }, new Response.ErrorListener() {
             // 서버와의 연동 에러시 출력

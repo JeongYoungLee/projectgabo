@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         /*------------------------------------------네비게이션--------------------------------------------*/
         navi = findViewById(R.id.Navi);
+        navi.getMenu().getItem(2).setChecked(true);
         //맵 객체 다시 생성하래서 다시 함
         MapFragment finalMapFragment = mapFragment;
         navi.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

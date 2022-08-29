@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--바텀시트 안 버튼 레이아웃xml-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F3E8">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_howtogo"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="@drawable/btn_loc_left"-->
+<!--                android:text="위치안내"-->
+<!--                android:textStyle="bold" />-->
+            <TextView
+                android:id="@+id/btn_howtogo"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:gravity="center"
+                android:background="@drawable/btn_loc_left"
+                android:text="위치안내"
+                android:textStyle="bold" />
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_find"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginLeft="5dp"-->
+<!--                android:layout_weight="2"-->
+<!--                android:background="@drawable/btn_loc_right"-->
+<!--                android:drawableLeft="@drawable/btn_wow_left"-->
+<!--                android:drawableRight="@drawable/btn_wow_right"-->
+<!--                android:padding="10dp"-->
+<!--                android:text="찾았다!"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textStyle="bold" />-->
+            <TextView
+                android:id="@+id/btn_find"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="2"
+                android:background="@drawable/btn_loc_right"
+                android:drawableLeft="@drawable/btn_wow_left"
+                android:drawableRight="@drawable/btn_wow_right"
+                android:padding="10dp"
+                android:text="찾았다!"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -44,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
         edt_login_passoword = findViewById(R.id.edt_login_password);
         btn_login_signin = findViewById(R.id.btn_login_signin);
         btn_login_signup = findViewById(R.id.btn_login_signup);
+
+
         //회원가입 페이지
         btn_login_signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,9 +119,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
+        stringRequest.setRetryPolicy(new com.android.volley.DefaultRetryPolicy(
+                20000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        ));
         String Tag = "LJY";
         stringRequest.setTag(Tag);
         queue.add(stringRequest);
+
+
     }
 }
+
 

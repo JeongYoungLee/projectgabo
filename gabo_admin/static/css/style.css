@@ -25,7 +25,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 @import url(../plugins/metismenu/css/metisMenu.min.css);
 @import url(../plugins/bootstrap-select/dist/css/bootstrap-select.min.css);
 
-
+#user_img{
+  width: 50px;
+}
 #star{
   width: 20%;
   height: 20%;
@@ -9358,7 +9360,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   padding: 0 20px 20px 10px; }
 
 .email-right-box {
-  margin-left: 250px; }
+  margin-left:10px; }
 
 .email-list {
   display: block;
@@ -11333,8 +11335,8 @@ table.dataTable thead .sorting::after {
     background: transparent; }
     .card-header:first-child {
       border-radius: 0; }
-  .card .card-body {
-    padding: 1.88rem 1.81rem; }
+  /* .card .card-body {
+    padding: 1.88rem 1.81rem; } */
   .card-action a {
     display: inline-block;
     color: #fff;

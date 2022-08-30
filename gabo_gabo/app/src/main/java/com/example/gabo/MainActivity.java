@@ -102,8 +102,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     fm.beginTransaction().replace(R.id.frame, finalMapFragment).commit();
 //                    bottomDialog.show(fm,"Test");  보물 정보(핀) 누르면 바텀시트 튀어나오기.필요한 곳에다 옮겨쓰기
                 }else if (selectId==R.id.page4){
-//                    fm.beginTransaction().replace(R.id.frame,mypageFrag).commit();
-                    bottomDialog.show(fm,"Test");
+                    fm.beginTransaction().replace(R.id.frame,mypageFrag).commit();
+//                    bottomDialog.show(fm,"Test");
                 }
                 return true;
             }

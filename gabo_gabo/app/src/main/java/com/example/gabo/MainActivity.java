@@ -110,7 +110,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         bottom_btn.performClick();
          */
         System.out.println(locationSource);
-        System.out.println(locationSource.);
+        System.out.println(locationSource.getLastLocation());
+        System.out.println(coord.latitude);
+        System.out.println(coord.longitude);
     }
 
 

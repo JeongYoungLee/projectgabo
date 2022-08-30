@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.naver.maps.geometry.LatLng;
@@ -128,6 +129,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //현재 위치 표시할 때 권한 확인
         ActivityCompat.requestPermissions(this,PERMISSIONS,LOCATION_PERMISSION_REQUEST_CODE);
     }
+
+    // 좌표를 나타내는 클래스
+    LatLng coord = new LatLng(35.146678,126.922288);
+    // 토스트로 위도 경도 출력
+    // Toast.makeText(context,
+    //    "위도: " + coord.latitude + ", 경도: " + coord.longitude,
+    //    Toast.LENGTH_SHORT).show();
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

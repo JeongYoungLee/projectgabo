@@ -109,10 +109,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         BottomNavigationView bottom_btn = findViewById(R.id.page3);
         bottom_btn.performClick();
          */
-        System.out.println(locationSource);
-        System.out.println(locationSource.getLastLocation());
-        System.out.println(coord.latitude);
-        System.out.println(coord.longitude);
+
     }
 
 
@@ -141,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // Toast.makeText(context,
     //    "위도: " + coord.latitude + ", 경도: " + coord.longitude,
     //    Toast.LENGTH_SHORT).show();
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

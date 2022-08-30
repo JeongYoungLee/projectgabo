@@ -119,11 +119,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-        stringRequest.setRetryPolicy(new com.android.volley.DefaultRetryPolicy(
-                20000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-        ));
+
         String Tag = "LJY";
         stringRequest.setTag(Tag);
         queue.add(stringRequest);

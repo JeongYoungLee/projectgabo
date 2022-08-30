@@ -109,7 +109,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         BottomNavigationView bottom_btn = findViewById(R.id.page3);
         bottom_btn.performClick();
          */
+        System.out.println(locationSource);
+        System.out.println(locationSource.);
     }
+
 
 
     //marker 찍는 법

@@ -20,6 +20,7 @@ import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.UiSettings;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.FusedLocationSource;
@@ -79,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // OnMapReady에서 NaverMap 객체를 받는다.
         mapFragment.getMapAsync(this);
         locationSource = new FusedLocationSource(this,LOCATION_PERMISSION_REQUEST_CODE);
+
+
 
 
 

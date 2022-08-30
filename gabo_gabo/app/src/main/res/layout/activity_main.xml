@@ -6,30 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-<!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
-<!--            android:id="@+id/navi"-->
-<!--            app:menu="@menu/menuitem"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="72dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent" >-->
-<!--        </com.google.android.material.bottomnavigation.BottomNavigationView>-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:id="@+id/frame"
-                android:layout_width="match_parent"
-                android:layout_height="665dp"></FrameLayout>
-        </LinearLayout>
-
+        <!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
+        <!--            android:id="@+id/navi"-->
+        <!--            app:menu="@menu/menuitem"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="72dp"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent" >-->
+        <!--        </com.google.android.material.bottomnavigation.BottomNavigationView>-->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/Navi"
             android:layout_width="match_parent"
@@ -37,7 +27,15 @@
             android:background="@color/treasureWhite"
             app:itemIconSize="45dp"
             app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/navi_item"></com.google.android.material.bottomnavigation.BottomNavigationView>
+            app:menu="@menu/navi_item"
+            tools:layout_editor_absoluteY="666dp"></com.google.android.material.bottomnavigation.BottomNavigationView>
+
+        <FrameLayout
+            android:id="@+id/frame"
+            android:layout_width="match_parent"
+            android:layout_height="665dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="1dp"></FrameLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

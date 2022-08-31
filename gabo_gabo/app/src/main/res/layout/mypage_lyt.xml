@@ -249,7 +249,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center|left"
-                    app:srcCompat="@drawable/b_img" />
+                    app:srcCompat="@drawable/mypage_treasure" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -276,7 +276,7 @@
                     android:id="@+id/imageView7"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    app:srcCompat="@drawable/a_img" />
+                    app:srcCompat="@drawable/mypage_pin" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -303,7 +303,7 @@
                     android:id="@+id/imageView8"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    app:srcCompat="@drawable/c_img" />
+                    app:srcCompat="@drawable/mypage_menu" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

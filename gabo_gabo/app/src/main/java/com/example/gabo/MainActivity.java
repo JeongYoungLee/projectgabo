@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private FragmentManager fm;
     private BottomNavigationView navi;
+    private String user_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-
         /*------------------------------------------네비게이션--------------------------------------------*/
         navi = findViewById(R.id.Navi);
         navi.getMenu().getItem(2).setChecked(true);
@@ -99,8 +100,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }else if (selectId==R.id.page2){
                     fm.beginTransaction().replace(R.id.frame,fragmHideTreasure).commit();
                 }else if (selectId==R.id.page3){
-                    fm.beginTransaction().replace(R.id.frame, finalMapFragment).commit();
-//                    bottomDialog.show(fm,"Test");  보물 정보(핀) 누르면 바텀시트 튀어나오기.필요한 곳에다 옮겨쓰기
+                    fm.beginTransaction().replace(R.id.frame,finalMapFragment).commit();
+                    // 현재위치
+                    // OnMapReady에서 NaverMap 객체를 받는다.
+                    finalMapFragment.getMapAsync(MainActivity.this::onMapReady);
+                    locationSource = new FusedLocationSource(MainActivity.this,LOCATION_PERMISSION_REQUEST_CODE);
+                    // 현재위치 표시
+                    MainActivity.this.naverMap = naverMap;
+                    naverMap.setLocationSource(locationSource); // 현재 위치
+                    //현재 위치 표시할 때 권한 확인
+                    ActivityCompat.requestPermissions(MainActivity.this,PERMISSIONS,LOCATION_PERMISSION_REQUEST_CODE);
+                    // bottomDialog.show(fm,"Test");  보물 정보(핀) 누르면 바텀시트 튀어나오기.필요한 곳에다 옮겨쓰기
+
                 }else if (selectId==R.id.page4){
                     fm.beginTransaction().replace(R.id.frame,mypageFrag).commit();
 //                    bottomDialog.show(fm,"Test");
@@ -108,13 +119,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             }
         });
+
+        
         /** 처음 바텀 적용
         BottomNavigationView bottom_btn = findViewById(R.id.page3);
         bottom_btn.performClick();
          */
 
     }
-
 
 
     //marker 찍는 법
@@ -135,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         ActivityCompat.requestPermissions(this,PERMISSIONS,LOCATION_PERMISSION_REQUEST_CODE);
     }
 
+
     // 좌표를 나타내는 클래스
     LatLng coord = new LatLng(35.146678,126.922288);
     // 토스트로 위도 경도 출력
@@ -152,9 +165,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }else{
                 naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
             }
+
+            // 위치가 바뀌면 좌표를 user_location에 저장해주는 메서드
+            naverMap.addOnLocationChangeListener(location ->
+                    user_location = location.getLatitude()+","+location.getLatitude());
+
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+
 
 
 

@@ -2,26 +2,11 @@
 <html lang="en">
 
 <head >
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>가져라 보물 가보!</title>
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon.png">
-    <!-- Pignose Calender -->
-    <link href="../static/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
-    <!-- Chartist -->
-    <link rel="stylesheet" href="../static/plugins/chartist/css/chartist.min.css">
-    <link rel="stylesheet" href="../static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
-    <!-- Custom Stylesheet -->
-    <link href="../static/css/style.css" rel="stylesheet">
-    <script src="../static/js/include.js"></script>
-
-
+    {% include "head.html" %}
 </head>
 
 <body>
-    <header include-html="sideMenu.html"></header>
+    {% include "sideMenu.html" %}
     <!--*******************
         Preloader start
     ********************-->
@@ -29,6 +14,7 @@
         <!--**********************************
             Sidebar end
         ***********************************-->
+        
 
         <!--**********************************
             Content body start
@@ -633,7 +619,7 @@
 
 
     <script src="../static/js/dashboard/dashboard-1.js"></script>
-
+    <script src="../static/js/include.js"></script>
 </body>
 
 </html>

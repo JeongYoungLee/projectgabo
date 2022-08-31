@@ -26,6 +26,9 @@ public class mypageFrag extends Fragment {
 
         fmm=getActivity().getSupportFragmentManager();
 //        bottomDialog = new BottomSheetDialogFrag();
+
+
+        /*---------내가찾은보물 열기-----------*/
         myFindTreasureFrag = new MyFindTreasureFrag();
         test_findbb = view.findViewById(R.id.test_findbb);
         test_findbb.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +45,9 @@ public class mypageFrag extends Fragment {
                 myFindTreasureFrag.show(fmm,"show");
             }
         });
+
+
+        
         return view;
 
 

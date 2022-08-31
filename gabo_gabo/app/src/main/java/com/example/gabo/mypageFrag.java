@@ -47,7 +47,6 @@ public class mypageFrag extends Fragment {
         });
 
 
-        
         return view;
 
 

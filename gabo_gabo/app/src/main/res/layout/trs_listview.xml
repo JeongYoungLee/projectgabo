@@ -100,7 +100,7 @@
     <ListView
         android:id="@+id/tl_list"
         android:layout_width="390dp"
-        android:layout_height="485dp"
+        android:layout_height="match_parent"
         android:layout_marginLeft="10dp" />
 
 </LinearLayout>

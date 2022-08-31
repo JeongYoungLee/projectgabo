@@ -104,6 +104,7 @@ public class HideTreasureFrag extends Fragment {
 
 
 
+
         View view = inflater.inflate(R.layout.trs_add_lyt,container,false);
         iv_UserPhoto = view.findViewById(R.id.iv_UserPhoto);
         tv_picadd = view.findViewById(R.id.tv_picadd);
@@ -189,15 +190,15 @@ public class HideTreasureFrag extends Fragment {
                 // 카테고리 선택하지 않았을때
                 if (tv_category.getText().toString().equals("카테고리선택")){
                     // 토스트로 선택해달라고 띄움
-                    Toast.makeText(getContext().getApplicationContext(),"카테고리를 선택해주세요",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext().getApplicationContext(),"카테고리를 선택해주세요",Toast.LENGTH_SHORT).show();
                 // 해쉬태그가 3개가 안됐을때
-                } else if (tagTextView.getText().toString().length()-tagTextView.getText().toString().replace("#","").length()==3){
+                } else if (tagTextView.getText().toString().length()-tagTextView.getText().toString().replace("#","").length()!=3){
                     // 해쉬태그 등록해달라고 토스트 띄움
-                    Toast.makeText(getContext().getApplicationContext(),"해쉬태그를 3개 달아주세요",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext().getApplicationContext(),"해쉬태그를 3개 달아주세요",Toast.LENGTH_SHORT).show();
                 // 사진 업로드 안했을때
                 } else if (upload == false){
                     // 사진 업로드 해달라고 토스트 띄움
-                    Toast.makeText(getContext().getApplicationContext(),"사진을 업로드 해주세요",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext().getApplicationContext(),"사진을 업로드 해주세요",Toast.LENGTH_SHORT).show();
                 } else{
 
                     sendRequest();
@@ -321,9 +322,9 @@ public class HideTreasureFrag extends Fragment {
             @Override
             public void onResponse(String response) {
                 Log.v("resultValue", response);
-                String[] info = response.split(",");
-                System.out.println(info[0]);
-                if (!info[0].equals("0")){
+//                String[] info = response.split(",");
+//                System.out.println(info[0]);
+                if (response.equals("등록신청완료")){
                     Toast.makeText(getContext().getApplicationContext(),"등록신청완료",Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getContext().getApplicationContext(),"등록 실패",Toast.LENGTH_LONG).show();
@@ -355,24 +356,35 @@ public class HideTreasureFrag extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 String[] keys = tagTextView.getText().toString().split("#");
-
-                String key1 = keys[0].replace(" ","");
-                String key2 = keys[1].replace(" ","");
-                String key3 = keys[2].replace(" ","");
+                String key1 = keys[1].replace(" ","");
+                String key2 = keys[2].replace(" ","");
+                String key3 = keys[3].replace(" ","");
                 String user_location = HideTreasureFrag.this.getArguments().getString("user_location");
+                String[] location = user_location.split(",");
                 String hideuser = HideTreasureFrag.this.getArguments().getString("user_id");
 
+
+                System.out.println("해쉬태그 : " +tagTextView.getText().toString());
+                System.out.println(cate);
+                System.out.println("h1 : " +key1);
+                System.out.println("h2 : " +key2);
+                System.out.println("h3 : " +key3);
+                System.out.println(location[0]);
+                System.out.println(location[1]);
+                System.out.println(hideuser);
+                System.out.println(String.valueOf(bitmap));
 
 
                 params.put("cate", cate);
                 params.put("key1", key1);
                 params.put("key2", key2);
                 params.put("key3", key3);
-                params.put("loca", user_location);
                 params.put("hideuser", hideuser);
-                params.put("img", bitmap.toString());
+                params.put("latitude",location[0]);
+                params.put("longitude",location[1]);
+                params.put("img", String.valueOf(bitmap));
 
-
+                upload = false;
                 return params;
             }
         };

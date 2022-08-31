@@ -102,11 +102,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (selectId==R.id.page1){
                     fm.beginTransaction().replace(R.id.frame,fragTresureListview).commit();
                 }else if (selectId==R.id.page2){
-                    fm.beginTransaction().replace(R.id.frame,fragmHideTreasure).commit();
                     Bundle bundle = new Bundle();
                     bundle.putString("user_id",user_id);
                     bundle.putString("user_location",user_location);
                     fragmHideTreasure.setArguments(bundle);
+                    System.out.println(user_location);
+                    fm.beginTransaction().replace(R.id.frame,fragmHideTreasure).commit();
                 }else if (selectId==R.id.page3){
                     fm.beginTransaction().replace(R.id.frame,finalMapFragment).commit();
                     // 현재위치
@@ -174,13 +175,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
             }
 
+            // 위치를 Toast로 알려줌
+            naverMap.addOnLocationChangeListener(location ->
+                    Toast.makeText(this,
+                            location.getLatitude() + ", " + location.getLongitude(),
+                            Toast.LENGTH_SHORT).show());
             // 위치가 바뀌면 좌표를 user_location에 저장해주는 메서드
             naverMap.addOnLocationChangeListener(location ->
-                    user_location = location.getLatitude()+","+location.getLatitude());
+                    user_location = location.getLatitude()+","+location.getLongitude());
+
 
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
 
 
 

@@ -47,27 +47,27 @@ public class MyFindTreasureFrag extends BottomSheetDialogFragment {
         myFindAdapter.addItems(
                 ContextCompat.getDrawable(getActivity(),R.drawable.e1),
                 ContextCompat.getDrawable(getActivity(),R.drawable.like_full),
-                "myname", "#나무밑","장난감","노란색","08/11/22 06:10 PM에 숨김","38"
+                "gil-dong", "#나무밑","장난감","노란색","08/11/22 06:10 PM에 숨김","38"
         );
         myFindAdapter.addItems(
                 ContextCompat.getDrawable(getActivity(),R.drawable.e1),
                 ContextCompat.getDrawable(getActivity(),R.drawable.like_full),
-                "myname", "#나무밑","장난감","노란색","08/11/22 06:10 PM에 숨김","38"
+                "mammoth", "#나무밑","장난감","노란색","08/11/22 06:10 PM에 숨김","38"
         );
         myFindAdapter.addItems(
                 ContextCompat.getDrawable(getActivity(),R.drawable.e1),
                 ContextCompat.getDrawable(getActivity(),R.drawable.like_full),
-                "myname", "#나무밑","장난감","노란색","08/11/22 06:10 PM에 숨김","38"
+                "happyhome", "#나무밑","장난감","노란색","08/11/22 06:10 PM에 숨김","38"
         );
         myFindAdapter.addItems(
                 ContextCompat.getDrawable(getActivity(),R.drawable.e1),
                 ContextCompat.getDrawable(getActivity(),R.drawable.like_full),
-                "myname", "#나무밑","장난감","노란색","08/11/22 06:10 PM에 숨김","38"
+                "buzzz", "#나무밑","장난감","노란색","08/11/22 06:10 PM에 숨김","38"
         );
         myFindAdapter.addItems(
                 ContextCompat.getDrawable(getActivity(),R.drawable.e1),
                 ContextCompat.getDrawable(getActivity(),R.drawable.like_full),
-                "myname", "#나무밑","장난감","노란색","08/11/22 06:10 PM에 숨김","38"
+                "molang", "#나무밑","장난감","노란색","08/11/22 06:10 PM에 숨김","38"
         );
         myFindList.setAdapter(myFindAdapter);
         ListView myfind_list = getActivity().findViewById(R.id.myfind_list);

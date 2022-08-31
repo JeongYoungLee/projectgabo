@@ -63,7 +63,8 @@ public class BottomSheetDialogFrag extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
 //                Toast.makeText(getContext().getApplicationContext(),"찾았다!",Toast.LENGTH_SHORT).show();
-                openWinDialog();
+//                openWinDialog();
+                openquizDialog();
             }
         });
 
@@ -144,6 +145,27 @@ public class BottomSheetDialogFrag extends BottomSheetDialogFragment {
                 Toast.makeText(getContext(), "Dialog Close", Toast.LENGTH_SHORT).show();
             }
         });
+        tv_findquiz1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openWinDialog();
+                findquizDailog.dismiss();
+            }
+        });
+        tv_findquiz2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openWinDialog();
+                findquizDailog.dismiss();
+            }
+        });
+        tv_findquiz3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openWinDialog();
+                findquizDailog.dismiss();
+            }
+        });
         findquizDailog.show();
 
     }
@@ -165,11 +187,19 @@ public class BottomSheetDialogFrag extends BottomSheetDialogFragment {
                 Toast.makeText(getContext(), "Dialog Close", Toast.LENGTH_SHORT).show();
             }
         });
+        /*보물찾기 완료 버튼을 누르게 되면
+        * 찾았다 버튼이 코멘트 남기기로 바뀐다*/
         tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 win_dialog.dismiss();
-                Toast.makeText(getContext(), "Button Ok", Toast.LENGTH_SHORT).show();
+                btn_find.setText("코멘트 남기기");
+                btn_find.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(getContext(), "코멘트남기기 화면으로 넘어가기", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         win_dialog.show();

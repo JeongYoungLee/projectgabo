@@ -261,13 +261,18 @@
                     android:layout_gravity="center|left"
                     app:srcCompat="@drawable/mypage_treasure" />
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="280dp"
                     android:layout_height="wrap_content"
                     android:text="내가 찾은 보물"
                     android:textColor="@color/black"
                     android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:textStyle="bold"
+                    />
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/mypage_gobtn_img"
                     />
             </LinearLayout>
             <View
@@ -289,13 +294,18 @@
                     android:layout_height="30dp"
                     app:srcCompat="@drawable/mypage_pin" />
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="280dp"
                     android:layout_height="wrap_content"
                     android:text="내가 숨긴 보물"
                     android:textColor="@color/black"
                     android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:textStyle="bold"
+                    />
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/mypage_gobtn_img"
                     />
             </LinearLayout>
             <View
@@ -317,13 +327,18 @@
                     android:layout_height="30dp"
                     app:srcCompat="@drawable/mypage_menu" />
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="280dp"
                     android:layout_height="wrap_content"
                     android:text="게시물 모아 보기"
                     android:textColor="@color/black"
                     android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:textStyle="bold"
+                    />
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/mypage_gobtn_img"
                     />
             </LinearLayout>
 

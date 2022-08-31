@@ -62,11 +62,17 @@
                             android:id="@+id/mypage_tv_level"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:text="Lv.30"
                             android:textColor="@color/treasureYellow"
-                            android:textSize="14sp"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="5dp"
+                            android:src="@drawable/mypage_lev"
+                            />
                     </LinearLayout>
 
                     <LinearLayout
@@ -83,7 +89,7 @@
                             android:layout_weight="1"
                             android:text="Columbus.K"
                             android:textColor="@color/white"
-                            android:textSize="14sp"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 

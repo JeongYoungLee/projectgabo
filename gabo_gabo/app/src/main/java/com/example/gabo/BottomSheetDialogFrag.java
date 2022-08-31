@@ -33,6 +33,7 @@ public class BottomSheetDialogFrag extends BottomSheetDialogFragment {
     //찾았다버튼
     private TextView btn_find;
     private Dialog win_dialog; //정답축하합니다 다이얼로그
+    private Dialog findquizDailog;
 
 
     @Override
@@ -123,6 +124,30 @@ public class BottomSheetDialogFrag extends BottomSheetDialogFragment {
     public void onStart() {
         super.onStart();
     }
+
+
+
+    /*---------------------------------------보물찾기 퀴즈 다이얼로그 실행---------------------------------------*/
+    private void openquizDialog(){
+        findquizDailog = new Dialog(getContext());
+        findquizDailog.setContentView(R.layout.dialog_findquiz);
+        findquizDailog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView imageViewClose=findquizDailog.findViewById(R.id.imageViewClose);
+        TextView tv_findquiz1 = findquizDailog.findViewById(R.id.tv_findquiz1);
+        TextView tv_findquiz2 = findquizDailog.findViewById(R.id.tv_findquiz2);
+        TextView tv_findquiz3 = findquizDailog.findViewById(R.id.tv_findquiz3);
+
+        imageViewClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findquizDailog.dismiss();
+                Toast.makeText(getContext(), "Dialog Close", Toast.LENGTH_SHORT).show();
+            }
+        });
+        findquizDailog.show();
+
+    }
+
 
     /*-----------------------------------보물찾기 정답 축하합니다 다이얼로그 실행-------------------------------------*/
 

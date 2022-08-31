@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 public class mypageFrag extends Fragment {
 
     LinearLayout test_findbb ;
+    LinearLayout myfind_bignum;
 //    BottomSheetDialogFrag bottomDialog;
     MyFindTreasureFrag myFindTreasureFrag; //내가 찾은 보물 바텀시트 프래그먼트
     FragmentManager fmm ;
@@ -31,6 +32,13 @@ public class mypageFrag extends Fragment {
             @Override
             public void onClick(View view) {
 //                bottomDialog.show(fmm,"test");
+                myFindTreasureFrag.show(fmm,"show");
+            }
+        });
+        myfind_bignum = view.findViewById(R.id.myfind_bignum);
+        myfind_bignum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 myFindTreasureFrag.show(fmm,"show");
             }
         });

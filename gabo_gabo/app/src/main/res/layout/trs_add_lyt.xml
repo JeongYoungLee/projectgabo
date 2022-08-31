@@ -39,8 +39,7 @@
             android:id="@+id/iv_UserPhoto"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:layout_gravity="center"/>
-
+            android:layout_gravity="center" />
     </FrameLayout>
 
     <LinearLayout
@@ -208,12 +207,13 @@
                 app:srcCompat="@drawable/addtreasure" />
 
             <TextView
+                android:id="@+id/tv_picadd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="보물 사진 등록"
                 android:textColor="@color/white"
-                android:textSize="18sp"
-                />
+                android:textSize="18sp" />
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

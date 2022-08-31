@@ -60,7 +60,15 @@ public class HideTreasureFrag extends Fragment {
 
     Bitmap bitmap;
 
+    // 보물 사진 보여지는곳
     private ImageView iv_UserPhoto;
+
+    // '보물 사진 등록'
+    private TextView tv_picadd ;
+    private boolean upload = false;
+
+    //사진등록 취소버튼
+    private TextView dialog_btn_cancle;
 
     //등록신청버튼
     private TextView btn_add_treasure;
@@ -76,6 +84,7 @@ public class HideTreasureFrag extends Fragment {
 
         View view = inflater.inflate(R.layout.trs_add_lyt,container,false);
         iv_UserPhoto = view.findViewById(R.id.iv_UserPhoto);
+        tv_picadd = view.findViewById(R.id.tv_picadd);
 
 
         /*--------------------보물등록 카테고리---------------------*/
@@ -150,7 +159,22 @@ public class HideTreasureFrag extends Fragment {
         btn_add_treasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext().getApplicationContext(),"등록신청완료",Toast.LENGTH_SHORT).show();
+                // 카테고리 선택하지 않았을때
+                if (tv_category.getText().toString().equals("카테고리선택")){
+                    // 토스트로 선택해달라고 띄움
+                    Toast.makeText(getContext().getApplicationContext(),"카테고리를 선택해주세요",Toast.LENGTH_LONG).show();
+                // 해쉬태그가 3개가 안됐을때
+                } else if (tagTextView.getText().toString().length()-tagTextView.getText().toString().replace("#","").length()==3){
+                    // 해쉬태그 등록해달라고 토스트 띄움
+                    Toast.makeText(getContext().getApplicationContext(),"해쉬태그를 3개 달아주세요",Toast.LENGTH_LONG).show();
+                // 사진 업로드 안했을때
+                } else if (upload == false){
+                    // 사진 업로드 해달라고 토스트 띄움
+                    Toast.makeText(getContext().getApplicationContext(),"사진을 업로드 해주세요",Toast.LENGTH_LONG).show();
+                } else{
+                    Toast.makeText(getContext().getApplicationContext(),"등록신청완료",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -187,7 +211,7 @@ public class HideTreasureFrag extends Fragment {
         });
 
         //취소 버튼
-        TextView dialog_btn_cancle = dialog_camera.findViewById(R.id.dialog_btn_cancle);
+        dialog_btn_cancle = dialog_camera.findViewById(R.id.dialog_btn_cancle);
         dialog_btn_cancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,11 +230,53 @@ public class HideTreasureFrag extends Fragment {
             if(result.getResultCode() == RESULT_OK && result.getData() != null){
                 Bundle extras = result.getData().getExtras();
                 bitmap = (Bitmap) extras.get("data");
-                img_addphoto.setImageBitmap(bitmap);
-                dialog_camera.dismiss();
+                resizeBitmapImage(bitmap,10);
+                iv_UserPhoto.setImageBitmap(bitmap);
+                dialog_btn_cancle.callOnClick();
+                tv_picadd.setText("");
+                img_addphoto.setImageResource(0);
+                upload = true;
+
             }
         }
     });
+
+    /**
+     * Bitmap이미지의 가로, 세로 사이즈를 리사이징 한다.
+     *
+     * @param source 원본 Bitmap 객체
+     * @param maxResolution 제한 해상도
+     * @return 리사이즈된 이미지 Bitmap 객체
+     */
+    public Bitmap resizeBitmapImage(Bitmap source, int maxResolution)
+    {
+        int width = source.getWidth();
+        int height = source.getHeight();
+        int newWidth = width;
+        int newHeight = height;
+        float rate = 0.0f;
+
+        if(width > height)
+        {
+            if(maxResolution < width)
+            {
+                rate = maxResolution / (float) width;
+                newHeight = (int) (height * rate);
+                newWidth = maxResolution;
+            }
+        }
+        else
+        {
+            if(maxResolution < height)
+            {
+                rate = maxResolution / (float) height;
+                newWidth = (int) (width * rate);
+                newHeight = maxResolution;
+            }
+        }
+
+        return Bitmap.createScaledBitmap(source, newWidth, newHeight, true);
+    }
 
 
 }

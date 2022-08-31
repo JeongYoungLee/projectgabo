@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //LoginActivity 에서 ID값 가져오기
+        Intent intent = getIntent();
+        String user_id = intent.getStringExtra("id");
 
         //기본상단바 안보이게 하기
         ActionBar actionBar = getSupportActionBar();
@@ -99,6 +103,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     fm.beginTransaction().replace(R.id.frame,fragTresureListview).commit();
                 }else if (selectId==R.id.page2){
                     fm.beginTransaction().replace(R.id.frame,fragmHideTreasure).commit();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("user_id",user_id);
+                    bundle.putString("user_location",user_location);
+                    fragmHideTreasure.setArguments(bundle);
                 }else if (selectId==R.id.page3){
                     fm.beginTransaction().replace(R.id.frame,finalMapFragment).commit();
                     // 현재위치

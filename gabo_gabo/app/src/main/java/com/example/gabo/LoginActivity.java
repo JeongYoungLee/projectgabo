@@ -76,9 +76,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.v("resultValue", response);
-                //String[] info = response.split(",");
-                if (response.equals("로그인성공")){
+                String[] info = response.split(",");
+                System.out.println(info[0]);
+                System.out.println(edt_login_email.getText().toString());
+                if (info[0].equals(edt_login_email.getText().toString())){
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    intent.putExtra("id",edt_login_email.getText().toString());
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(),"ID 또는 PW가 틀렸습니다.",Toast.LENGTH_LONG).show();

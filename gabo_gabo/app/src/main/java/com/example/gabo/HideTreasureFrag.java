@@ -39,10 +39,24 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /*-------------보물 등록페이지의 프레그먼트-----------------*/
@@ -76,15 +90,27 @@ public class HideTreasureFrag extends Fragment {
     private HashTagEditTextView tagTextView; //입력된 해시태그를 배열로 추출하기 위한 변수
     FrameLayout hash_hint_frame;
 
+    private String cate;
+
+    private RequestQueue queue;
+    private StringRequest stringRequest;
+
+
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
+
         View view = inflater.inflate(R.layout.trs_add_lyt,container,false);
         iv_UserPhoto = view.findViewById(R.id.iv_UserPhoto);
         tv_picadd = view.findViewById(R.id.tv_picadd);
+
+        // bundle을 이용해서 액티비티에서 변수값 받기
+
+
 
 
         /*--------------------보물등록 카테고리---------------------*/
@@ -114,6 +140,7 @@ public class HideTreasureFrag extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 tv_category.setText(treasureCategory[i]);
+                cate = String.valueOf(i);
 
             }
             @Override
@@ -172,7 +199,8 @@ public class HideTreasureFrag extends Fragment {
                     // 사진 업로드 해달라고 토스트 띄움
                     Toast.makeText(getContext().getApplicationContext(),"사진을 업로드 해주세요",Toast.LENGTH_LONG).show();
                 } else{
-                    Toast.makeText(getContext().getApplicationContext(),"등록신청완료",Toast.LENGTH_SHORT).show();
+
+                    sendRequest();
                 }
 
             }
@@ -180,7 +208,10 @@ public class HideTreasureFrag extends Fragment {
 
         return view;
 
+
     }
+
+
 
     /*-------다이얼로그 디자인 함수-------*/
     public void showDialogCamera(){
@@ -279,4 +310,78 @@ public class HideTreasureFrag extends Fragment {
     }
 
 
+    public void sendRequest() {
+        // Volley Lib 새로운 요청객체 생성
+        queue = Volley.newRequestQueue(getContext().getApplicationContext());
+        // 서버에 요청할 주소
+        String url = "http://192.168.21.252:5013/addtreasure";
+        // 요청 문자열 저장
+        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // 응답데이터를 받아오는 곳
+            @Override
+            public void onResponse(String response) {
+                Log.v("resultValue", response);
+                String[] info = response.split(",");
+                System.out.println(info[0]);
+                if (!info[0].equals("0")){
+                    Toast.makeText(getContext().getApplicationContext(),"등록신청완료",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext().getApplicationContext(),"등록 실패",Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            // 서버와의 연동 에러시 출력
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }) {
+            @Override //response를 UTF8로 변경해주는 소스코드
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String utf8String = new String(response.data, "UTF-8");
+                    return Response.success(utf8String, HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    // log error
+                    return Response.error(new ParseError(e));
+                } catch (Exception e) {
+                    // log error
+                    return Response.error(new ParseError(e));
+                }
+            }
+
+            // 보낼 데이터를 저장하는 곳
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                String[] keys = tagTextView.getText().toString().split("#");
+
+                String key1 = keys[0].replace(" ","");
+                String key2 = keys[1].replace(" ","");
+                String key3 = keys[2].replace(" ","");
+                String user_location = HideTreasureFrag.this.getArguments().getString("user_location");
+                String hideuser = HideTreasureFrag.this.getArguments().getString("user_id");
+
+
+
+                params.put("cate", cate);
+                params.put("key1", key1);
+                params.put("key2", key2);
+                params.put("key3", key3);
+                params.put("loca", user_location);
+                params.put("hideuser", hideuser);
+                params.put("img", bitmap.toString());
+
+
+                return params;
+            }
+        };
+
+
+        String Tag = "LJY";
+        stringRequest.setTag(Tag);
+        queue.add(stringRequest);
+
+
+    }
 }

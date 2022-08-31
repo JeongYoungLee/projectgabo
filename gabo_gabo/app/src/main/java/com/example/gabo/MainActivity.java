@@ -10,11 +10,22 @@ import androidx.fragment.app.FragmentManager;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.LocationTrackingMode;
@@ -26,6 +37,10 @@ import com.naver.maps.map.UiSettings;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.FusedLocationSource;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 //메인 액티비티
@@ -46,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FragmentManager fm;
     private BottomNavigationView navi;
     private String user_location;
+
+    private RequestQueue queue;
+    private StringRequest stringRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //marker 찍는 법
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
+
+        sendRequest();
         Marker marker = new Marker();
         marker.setIcon(OverlayImage.fromResource(R.drawable.marker_blue));
         marker.setWidth(100);
@@ -190,8 +210,57 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    public void sendRequest() {
+        // Volley Lib 새로운 요청객체 생성
+        queue = Volley.newRequestQueue(this.getApplicationContext());
+        // 서버에 요청할 주소
+        String url = "http://192.168.21.252:5013/mappage";
+        // 요청 문자열 저장
+        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // 응답데이터를 받아오는 곳
+            @Override
+            public void onResponse(String response) {
+                Log.v("resultValue", response);
+                String[] info = response.split(",");
+                for (int i = 0; i < info.length; i++) {
+                    System.out.println(info[i]);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            // 서버와의 연동 에러시 출력
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }) {
+            @Override //response를 UTF8로 변경해주는 소스코드
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String utf8String = new String(response.data, "UTF-8");
+                    return Response.success(utf8String, HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    // log error
+                    return Response.error(new ParseError(e));
+                } catch (Exception e) {
+                    // log error
+                    return Response.error(new ParseError(e));
+                }
+            }
+
+            // 보낼 데이터를 저장하는 곳
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+
+        String Tag = "LJY";
+        stringRequest.setTag(Tag);
+        queue.add(stringRequest);
 
 
-
+    }
 
 }

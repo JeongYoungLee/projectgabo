@@ -67,6 +67,15 @@ public class BottomSheetDialogFrag extends BottomSheetDialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
+        // 메인액티비티에서 서버 리스폰 받아서 가져옴
+        cate = getArguments().getString("cate");
+        key1 =getArguments().getString("key1","0");
+        key2 = getArguments().getString("key2","0");
+        key3 = getArguments().getString("key3","0");
+        hideuser = getArguments().getString("hideuser","0");
+        hidedate = getArguments().getString("hidedate","0");
+        like = getArguments().getString("like","0");
+
         BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
         View view = View.inflate(getContext(),R.layout.trs_comment_bottom_sheet_lyt,null);
 
@@ -75,30 +84,21 @@ public class BottomSheetDialogFrag extends BottomSheetDialogFragment {
 
         View view2 = View.inflate(getContext(),R.layout.treasure_info_lyt,null);
 
-        ti_tv_comment = view2.findViewById(R.id.ti_tv_comment);
-        ti_tv_tag1 = view2.findViewById(R.id.ti_tv_tag1);
-        ti_tv_tag2 = view2.findViewById(R.id.ti_tv_tag2);
-        ti_tv_tag3 = view2.findViewById(R.id.ti_tv_tag3);
-        ti_tv_when = view2.findViewById(R.id.ti_tv_when);
-        ti_tv_like = view2.findViewById(R.id.ti_tv_like);
-
-        // 메인액티비티에서 서버 리스폰 받아서 가져옴
-        cate = getArguments().getString("cate");
-        key1 =getArguments().getString("key1");
-        key2 = getArguments().getString("key2");
-        key3 = getArguments().getString("key3");
-        hideuser = getArguments().getString("hideuser");
-        hidedate = getArguments().getString("hidedate");
-        like = getArguments().getString("like");
+        ti_tv_comment = view.findViewById(R.id.ti_tv_comment);
+        ti_tv_tag1 = view.findViewById(R.id.ti_tv_tag1);
+        ti_tv_tag2 = view.findViewById(R.id.ti_tv_tag2);
+        ti_tv_tag3 = view.findViewById(R.id.ti_tv_tag3);
+        ti_tv_when = view.findViewById(R.id.ti_tv_when);
+        ti_tv_like = view.findViewById(R.id.ti_tv_like);
 
         ti_tv_comment.setText(hideuser);
-        ti_tv_tag1.setText(key1);
-        ti_tv_tag2.setText(key2);
-        ti_tv_tag3.setText(key3);
+        ti_tv_tag1.setText("#"+key1);
+        ti_tv_tag2.setText("#"+key2);
+        ti_tv_tag3.setText("#"+key3);
         ti_tv_when.setText(hidedate+"에 숨김");
         ti_tv_like.setText(like);
 
-        System.out.println("되냐");
+        System.out.println("숨긴날"+hidedate);
 
 
 

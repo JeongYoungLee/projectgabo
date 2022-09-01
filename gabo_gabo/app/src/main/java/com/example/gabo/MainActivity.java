@@ -41,8 +41,11 @@ import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.FusedLocationSource;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.Time;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 //메인 액티비티
@@ -67,8 +70,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private RequestQueue queue;
     private StringRequest stringRequest;
 
-    //바텀시트
-    BottomSheetDialogFrag bottomDialog = new BottomSheetDialogFrag();
+    //보물 아이디
+    private String t_id;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     //현재 위치 표시할 때 권한 확인
                     ActivityCompat.requestPermissions(MainActivity.this,PERMISSIONS,LOCATION_PERMISSION_REQUEST_CODE);
                     // bottomDialog.show(fm,"Test");  보물 정보(핀) 누르면 바텀시트 튀어나오기.필요한 곳에다 옮겨쓰기
-                    sendRequest();
+                    sendRequest1();
 
                 }else if (selectId==R.id.page4){
                     fm.beginTransaction().replace(R.id.frame,mypageFrag).commit();
@@ -154,7 +159,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        sendRequest();
+        sendRequest1();
+
+        // 가끔 처음 로딩때 마커 안떠서 타이머 켜놓음 5초에 한번씩 마커 갱신 리퀘스트 실행함
+        Timer timer = new Timer();
+
+        TimerTask TT = new TimerTask() {
+            @Override
+            public void run() {
+                // 반복실행할 구문
+                sendRequest1();
+            }
+        };
+
+        timer.schedule(TT, 1000, 5000); //Timer 실행
+
+//        timer.cancel();//타이머 종료
         /** 처음 바텀 적용
         BottomNavigationView bottom_btn = findViewById(R.id.page3);
         bottom_btn.performClick();
@@ -200,7 +220,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Marker marker = (Marker)overlay;
 
         if (marker.getInfoWindow() == null) {
-            setInfoWindow(bottomDialog);
+            t_id = marker.getCaptionText();
+            sendRequest2();
+//            setInfoWindow(bottomDialog);
         } else {
             // 이미 현재 마커에 정보 창이 열려있을 경우 닫음
             infoWindow.close();
@@ -243,8 +265,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-
-    public void sendRequest() {
+    // 보물 갱신 리퀘스트
+    public void sendRequest1() {
         // Volley Lib 새로운 요청객체 생성
         queue = Volley.newRequestQueue(this.getApplicationContext());
         // 서버에 요청할 주소
@@ -265,28 +287,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         if (info2[6].equals("null")){ break; }
                         // 승인 안됐으면 마커표시 안함
                         if (info2[7].equals("0")){break;}
-
-
                         
                         double lati = Double.valueOf(info2[8]);
                         double longi = Double.valueOf(info2[9]);
                         Marker marker = new Marker();
+                        marker.setCaptionText(info2[0]);
                         marker.setIcon(OverlayImage.fromResource(R.drawable.marker_blue));
                         marker.setWidth(100);
                         marker.setHeight(115);
                         marker.setPosition(new LatLng(lati,longi));
                         marker.setOnClickListener(listener);
                         marker.setMap(naverMap);
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("cate",info2[1]);
-                        bundle.putString("key1",info2[2]);
-                        bundle.putString("key2",info2[3]);
-                        bundle.putString("key3",info2[4]);
-                        bundle.putString("hideuser",info2[5]);
-                        bundle.putString("hidedate",info2[10]);
-                        bundle.putString("like",info2[11]);
-                        bottomDialog.setArguments(bundle);
 
                     }
 
@@ -326,6 +337,84 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+
+        String Tag = "LJY";
+        stringRequest.setTag(Tag);
+        queue.add(stringRequest);
+
+
+    }
+
+    // 보물 클릭 리퀘스트
+    public void sendRequest2() {
+        // Volley Lib 새로운 요청객체 생성
+        queue = Volley.newRequestQueue(this.getApplicationContext());
+        // 서버에 요청할 주소
+        String url = "http://192.168.21.252:5013/clicktrs";
+        // 요청 문자열 저장
+        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // 응답데이터를 받아오는 곳
+            @Override
+            public void onResponse(String response) {
+                Log.v("resultValue", response);
+                String[] info = response.split(",");
+
+                System.out.println(response);
+
+                String cate = info[0];
+                String key1 = info[1];
+                String key2 = info[2];
+                String key3 = info[3];
+                String hideuser = info[4];
+                String hidedate = info[8].substring(2,16);
+                String like = info[9];
+
+                Bundle bundle = new Bundle();
+                bundle.putString("cate",cate);
+                bundle.putString("key1",key1);
+                bundle.putString("key2",key2);
+                bundle.putString("key3",key3);
+                bundle.putString("hideuser",hideuser);
+                bundle.putString("hidedate",hidedate);
+                bundle.putString("like",like);
+                //바텀시트
+                BottomSheetDialogFrag bottomDialog = new BottomSheetDialogFrag();
+                bottomDialog.setArguments(bundle);
+                setInfoWindow(bottomDialog);
+
+
+
+
+            }
+        }, new Response.ErrorListener() {
+            // 서버와의 연동 에러시 출력
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }) {
+            @Override //response를 UTF8로 변경해주는 소스코드
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String utf8String = new String(response.data, "UTF-8");
+                    return Response.success(utf8String, HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    // log error
+                    return Response.error(new ParseError(e));
+                } catch (Exception e) {
+                    // log error
+                    return Response.error(new ParseError(e));
+                }
+            }
+
+            // 보낼 데이터를 저장하는 곳
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("t_id",t_id);
                 return params;
             }
         };

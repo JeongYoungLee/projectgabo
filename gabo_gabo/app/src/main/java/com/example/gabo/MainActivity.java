@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
+
         /*------------------------------------------지도--------------------------------------------*/
         //네이버지도
         NaverMapSdk.getInstance(this).setClient(
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // OnMapReady에서 NaverMap 객체를 받는다.
         mapFragment.getMapAsync(this);
         locationSource = new FusedLocationSource(this,LOCATION_PERMISSION_REQUEST_CODE);
-        sendRequest();
+
 
 
 
@@ -153,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        
+        sendRequest();
         /** 처음 바텀 적용
         BottomNavigationView bottom_btn = findViewById(R.id.page3);
         bottom_btn.performClick();
@@ -199,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Marker marker = (Marker)overlay;
 
         if (marker.getInfoWindow() == null) {
-            Marker marker1 = marker;
             setInfoWindow(bottomDialog);
         } else {
             // 이미 현재 마커에 정보 창이 열려있을 경우 닫음
@@ -266,6 +266,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         // 승인 안됐으면 마커표시 안함
                         if (info2[7].equals("0")){break;}
 
+
+                        
+                        double lati = Double.valueOf(info2[8]);
+                        double longi = Double.valueOf(info2[9]);
+                        Marker marker = new Marker();
+                        marker.setIcon(OverlayImage.fromResource(R.drawable.marker_blue));
+                        marker.setWidth(100);
+                        marker.setHeight(115);
+                        marker.setPosition(new LatLng(lati,longi));
+                        marker.setOnClickListener(listener);
+                        marker.setMap(naverMap);
+
                         Bundle bundle = new Bundle();
                         bundle.putString("cate",info2[1]);
                         bundle.putString("key1",info2[2]);
@@ -275,17 +287,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         bundle.putString("hidedate",info2[10]);
                         bundle.putString("like",info2[11]);
                         bottomDialog.setArguments(bundle);
-
-                        
-                        double lati = Double.valueOf(info2[7]);
-                        double longi = Double.valueOf(info2[8]);
-                        Marker marker = new Marker();
-                        marker.setIcon(OverlayImage.fromResource(R.drawable.marker_blue));
-                        marker.setWidth(100);
-                        marker.setHeight(115);
-                        marker.setPosition(new LatLng(lati,longi));
-                        marker.setOnClickListener(listener);
-                        marker.setMap(naverMap);
 
                     }
 

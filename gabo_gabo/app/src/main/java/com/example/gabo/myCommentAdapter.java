@@ -42,7 +42,7 @@ public class myCommentAdapter extends BaseAdapter {
         TextView mycomment_tv_tag1 = view.findViewById(R.id.mycomment_tv_tag1);
         TextView mycomment_tv_tag2 = view.findViewById(R.id.mycomment_tv_tag2);
         TextView mycomment_tv_tag3 = view.findViewById(R.id.mycomment_tv_tag3);
-        TextView myfind_tv_when = view.findViewById(R.id.myfind_tv_when);
+        TextView mycomment_tv_when = view.findViewById(R.id.mycomment_tv_when);
         TextView mycomment_tv_comment = view.findViewById(R.id.mycomment_tv_comment);
         TextView mycomment_tv_like = view.findViewById(R.id.mycomment_tv_like);
 
@@ -53,7 +53,7 @@ public class myCommentAdapter extends BaseAdapter {
         mycomment_tv_tag1.setText(vo.getMycomment_tv_tag1());
         mycomment_tv_tag2.setText(vo.getMycomment_tv_tag2());
         mycomment_tv_tag3.setText(vo.getMycomment_tv_tag3());
-        myfind_tv_when.setText(vo.getMycomment_tv_when());
+        mycomment_tv_when.setText(vo.getMycomment_tv_when());
         mycomment_tv_comment.setText(vo.getMycomment_tv_comment());
         mycomment_tv_like.setText(vo.getMycomment_tv_like());
 
@@ -61,8 +61,8 @@ public class myCommentAdapter extends BaseAdapter {
     }
 
 
-    public void addItems(Drawable mycomment_img_profile, Drawable mycomment_img_like, String mycomment_tv_userid, String mycomment_tv_tag1, String mycomment_tv_tag2, String mycomment_tv_tag3, String myfind_tv_when, String mycomment_tv_comment, String mycomment_tv_like ){
-        myCommentsVO vo = new myCommentsVO(mycomment_img_profile, mycomment_img_like, mycomment_tv_userid, mycomment_tv_tag1, mycomment_tv_tag2, mycomment_tv_tag3, myfind_tv_when, mycomment_tv_comment, mycomment_tv_like);
+    public void addItems(Drawable mycomment_img_profile, Drawable mycomment_img_like, String mycomment_tv_userid, String mycomment_tv_tag1, String mycomment_tv_tag2, String mycomment_tv_tag3, String mycomment_tv_when, String mycomment_tv_comment, String mycomment_tv_like ){
+        myCommentsVO vo = new myCommentsVO(mycomment_img_profile, mycomment_img_like, mycomment_tv_userid, mycomment_tv_tag1, mycomment_tv_tag2, mycomment_tv_tag3, mycomment_tv_when, mycomment_tv_comment, mycomment_tv_like);
         this.items.add(vo);
     }
 }

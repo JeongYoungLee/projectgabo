@@ -1,1 +1,1 @@
-web: gunicorn Project_Gabo_Server.ipynb:app
+web: gunicorn app:app

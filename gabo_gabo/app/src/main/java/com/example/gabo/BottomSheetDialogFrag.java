@@ -35,6 +35,20 @@ public class BottomSheetDialogFrag extends BottomSheetDialogFragment {
     private Dialog win_dialog; //정답축하합니다 다이얼로그
     private Dialog findquizDailog;
 
+    // 숨긴사람 이름
+    private TextView ti_tv_comment;
+
+    // 숨긴 보물의 해쉬태그
+    private TextView ti_tv_tag1, ti_tv_tag2, ti_tv_tag3;
+
+    // 메인엑티비티에서 번들로 가져온값을 저장하려고 만듬
+    private String cate,key1,key2,key3,hideuser,hidedate,like;
+
+    //trs_comment_bottom_sheet_lyt 레이아웃에서 변경한 값을 넣어줄 아이디를 넣어줄 변수
+    private TextView ti_tv_when,ti_tv_like;
+
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +56,10 @@ public class BottomSheetDialogFrag extends BottomSheetDialogFragment {
         /*바텀시트 라운드 투명배경을 위한 스타일 설정*/
         setStyle(
                 STYLE_NORMAL,R.style.TransparentBottomSheetDialogFragment
+
+
         );
+
     }
 
 
@@ -55,6 +72,37 @@ public class BottomSheetDialogFrag extends BottomSheetDialogFragment {
 
         dialog.setContentView(view);
         bBehavior = BottomSheetBehavior.from((View)view.getParent());
+
+        View view2 = View.inflate(getContext(),R.layout.treasure_info_lyt,null);
+
+        ti_tv_comment = view2.findViewById(R.id.ti_tv_comment);
+        ti_tv_tag1 = view2.findViewById(R.id.ti_tv_tag1);
+        ti_tv_tag2 = view2.findViewById(R.id.ti_tv_tag2);
+        ti_tv_tag3 = view2.findViewById(R.id.ti_tv_tag3);
+        ti_tv_when = view2.findViewById(R.id.ti_tv_when);
+        ti_tv_like = view2.findViewById(R.id.ti_tv_like);
+
+        // 메인액티비티에서 서버 리스폰 받아서 가져옴
+        cate = getArguments().getString("cate");
+        key1 =getArguments().getString("key1");
+        key2 = getArguments().getString("key2");
+        key3 = getArguments().getString("key3");
+        hideuser = getArguments().getString("hideuser");
+        hidedate = getArguments().getString("hidedate");
+        like = getArguments().getString("like");
+
+        ti_tv_comment.setText(hideuser);
+        ti_tv_tag1.setText(key1);
+        ti_tv_tag2.setText(key2);
+        ti_tv_tag3.setText(key3);
+        ti_tv_when.setText(hidedate+"에 숨김");
+        ti_tv_like.setText(like);
+
+        System.out.println("되냐");
+
+
+
+
 
 
         /*---------------------찾았다 버튼--------------------- */

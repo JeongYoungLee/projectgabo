@@ -34,7 +34,9 @@ import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.UiSettings;
+import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.FusedLocationSource;
 
@@ -65,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private RequestQueue queue;
     private StringRequest stringRequest;
 
+    //바텀시트
+    BottomSheetDialogFrag bottomDialog = new BottomSheetDialogFrag();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +90,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         fm = getSupportFragmentManager();
         /*fm.beginTransaction().replace(R.id.frame,fragmHideTreasure).commit();*/
 
-        //바텀시트
-        BottomSheetDialogFrag bottomDialog = new BottomSheetDialogFrag();
+
 
 
         /*------------------------------------------지도--------------------------------------------*/
@@ -176,9 +180,39 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         ActivityCompat.requestPermissions(this,PERMISSIONS,LOCATION_PERMISSION_REQUEST_CODE);
     }
 
+    // 마커 정보창
+    InfoWindow infoWindow = new InfoWindow();
+
+    // 보물 정보창을 보여주는 메서드
+    public void setInfoWindow(BottomSheetDialogFrag bottomDialog) {
+        bottomDialog.show(fm,"Test");
+    }
+
+    // 지도를 클릭하면 정보 창을 닫음
+    public void setNaverMap(NaverMap naverMap) {
+        this.naverMap = naverMap;
+        naverMap.setOnMapClickListener((coord,point) -> {
+            infoWindow.close();
+        });
+    }
+    Overlay.OnClickListener listener = overlay -> {
+        Marker marker = (Marker)overlay;
+
+        if (marker.getInfoWindow() == null) {
+            Marker marker1 = marker;
+            setInfoWindow(bottomDialog);
+        } else {
+            // 이미 현재 마커에 정보 창이 열려있을 경우 닫음
+            infoWindow.close();
+        }
+
+        return true;
+    };
+
+
 
     // 좌표를 나타내는 클래스
-    LatLng coord = new LatLng(35.146678,126.922288);
+//    LatLng coord = new LatLng(35.146678,126.922288);
     // 토스트로 위도 경도 출력
     // Toast.makeText(context,
     //    "위도: " + coord.latitude + ", 경도: " + coord.longitude,
@@ -227,14 +261,32 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     System.out.println(info[i]);
                     for (int j = 0; j <info[i].length();j++){
                         String [] info2 = info[i].split(",");
-                        double lati = Double.valueOf(info2[9]);
-                        double longi = Double.valueOf(info2[10]);
+                        // 찾은 유저가 있으면 마커표시 안함
+                        if (info2[6].equals("null")){ break; }
+                        // 승인 안됐으면 마커표시 안함
+                        if (info2[7].equals("0")){break;}
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("cate",info2[1]);
+                        bundle.putString("key1",info2[2]);
+                        bundle.putString("key2",info2[3]);
+                        bundle.putString("key3",info2[4]);
+                        bundle.putString("hideuser",info2[5]);
+                        bundle.putString("hidedate",info2[10]);
+                        bundle.putString("like",info2[11]);
+                        bottomDialog.setArguments(bundle);
+
+                        
+                        double lati = Double.valueOf(info2[7]);
+                        double longi = Double.valueOf(info2[8]);
                         Marker marker = new Marker();
                         marker.setIcon(OverlayImage.fromResource(R.drawable.marker_blue));
                         marker.setWidth(100);
                         marker.setHeight(115);
                         marker.setPosition(new LatLng(lati,longi));
+                        marker.setOnClickListener(listener);
                         marker.setMap(naverMap);
+
                     }
 
 

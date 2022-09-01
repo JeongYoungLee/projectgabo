@@ -25,6 +25,8 @@ public class mypageFrag extends Fragment {
 //    BottomSheetDialogFrag bottomDialog;
     MyFindTreasureFrag myFindTreasureFrag; //내가 찾은 보물 바텀시트 프래그먼트
     MyHideTreasureFrag myHideTreasureFrag; //내가 숨긴 보물 바텀시트 프래그먼트
+    MyCommentsFrag myCommentsFrag; //게시물 모아보기 바텀시트 프래그먼트
+
     FragmentManager fmm ;
 
     @Nullable
@@ -68,6 +70,16 @@ public class mypageFrag extends Fragment {
             @Override
             public void onClick(View view) {
                 myHideTreasureFrag.show(fmm,"showmyhide");
+            }
+        });
+
+        /*------------게시물 모아보기-----------*/
+        myCommentsFrag = new MyCommentsFrag();
+        mycomment_open = view.findViewById(R.id.mycomment_open);
+        mycomment_open.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myCommentsFrag.show(fmm,"showmycomments");
             }
         });
 

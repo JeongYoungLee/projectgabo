@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, request, url_for, session
 import cx_Oracle as db
-import os
+
 
 app = Flask(__name__)
 

@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // OnMapReady에서 NaverMap 객체를 받는다.
         mapFragment.getMapAsync(this);
         locationSource = new FusedLocationSource(this,LOCATION_PERMISSION_REQUEST_CODE);
+        sendRequest();
 
 
 
@@ -138,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     //현재 위치 표시할 때 권한 확인
                     ActivityCompat.requestPermissions(MainActivity.this,PERMISSIONS,LOCATION_PERMISSION_REQUEST_CODE);
                     // bottomDialog.show(fm,"Test");  보물 정보(핀) 누르면 바텀시트 튀어나오기.필요한 곳에다 옮겨쓰기
+                    sendRequest();
 
                 }else if (selectId==R.id.page4){
                     fm.beginTransaction().replace(R.id.frame,mypageFrag).commit();
@@ -160,14 +162,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
 
-        sendRequest();
+
         Marker marker = new Marker();
         marker.setIcon(OverlayImage.fromResource(R.drawable.marker_blue));
-        marker.setWidth(100);
-        marker.setHeight(100);
+        marker.setWidth(1);
+        marker.setHeight(1);
         marker.setPosition(new LatLng(35.146678,126.922288));
-        marker.setPosition(new LatLng(35.146939,126.922313));
-        marker.setMap(naverMap);
 
         // 현재위치 표시
         this.naverMap = naverMap;
@@ -195,11 +195,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
             }
 
-            // 위치를 Toast로 알려줌
-            naverMap.addOnLocationChangeListener(location ->
-                    Toast.makeText(this,
-                            location.getLatitude() + ", " + location.getLongitude(),
-                            Toast.LENGTH_SHORT).show());
+            // 현재 위치를 Toast로 알려줌
+//            naverMap.addOnLocationChangeListener(location ->
+//                    Toast.makeText(this,
+//                            location.getLatitude() + ", " + location.getLongitude(),
+//                            Toast.LENGTH_SHORT).show());
             // 위치가 바뀌면 좌표를 user_location에 저장해주는 메서드
             naverMap.addOnLocationChangeListener(location ->
                     user_location = location.getLatitude()+","+location.getLongitude());
@@ -221,9 +221,30 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onResponse(String response) {
                 Log.v("resultValue", response);
-                String[] info = response.split(",");
+                String[] info = response.split("/");
+                System.out.println(info.length);
                 for (int i = 0; i < info.length; i++) {
                     System.out.println(info[i]);
+                    for (int j = 0; j <info[i].length();j++){
+                        String [] info2 = info[i].split(",");
+                        double lati = Double.valueOf(info2[9]);
+                        double longi = Double.valueOf(info2[10]);
+                        Marker marker = new Marker();
+                        marker.setIcon(OverlayImage.fromResource(R.drawable.marker_blue));
+                        marker.setWidth(100);
+                        marker.setHeight(115);
+                        marker.setPosition(new LatLng(lati,longi));
+                        marker.setMap(naverMap);
+                    }
+
+
+//                    Marker marker = new Marker();
+//                    marker.setIcon(OverlayImage.fromResource(R.drawable.marker_blue));
+//                    marker.setWidth(100);
+//                    marker.setHeight(100);
+//                    marker.setPosition(new LatLng(35.146678,126.922288));
+//                    marker.setPosition(new LatLng(35.146939,126.922313));
+//                    marker.setMap(naverMap);
                 }
 
             }

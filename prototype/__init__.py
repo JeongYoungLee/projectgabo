@@ -264,4 +264,4 @@ def mainPage():
     return render_template('index.html')   
           
 if __name__ == '__main__':
-    app.run(host='192.168.21.252', port=5013)
+    app.run(host='0.0.0.0', port=5013)
